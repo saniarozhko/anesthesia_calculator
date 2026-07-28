@@ -1,0 +1,35 @@
+workflows:
+  ios-android:
+    name: Android + iOS
+
+    environment:
+      flutter: stable
+
+    scripts:
+      - flutter pub get
+
+      - name: Build Android APK
+        script: |
+          flutter build apk --release
+
+      - name: Build Android AAB
+        script: |
+          flutter build appbundle --release
+
+      - name: Build iOS
+        script: |
+          flutter build ios --debug --no-codesign
+
+      - name: Create IPA
+        script: |
+          mkdir Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          cd Payload
+          zip -r ../Runner.ipa .
+          cd ..
+
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+      - build/app/outputs/bundle/release/*.aab
+      - build/ios/iphoneos/Runner.app
+      - Runner.ipa

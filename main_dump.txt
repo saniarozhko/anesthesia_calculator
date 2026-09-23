@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'dart:async';
 
 // ===============================
-// ЭКРАНЫ КАЛЬКУЛЯТОРОВ
+// Р­РљР РђРќР« РљРђР›Р¬РљРЈР›РЇРўРћР РћР’
 // ===============================
 
 import 'bmi_screen.dart';
@@ -31,7 +31,6 @@ import 'grace_screen.dart';
 import 'killip_screen.dart';
 import 'cpis_screen.dart';
 import 'cha2ds2vasc_screen.dart';
-import 'child_pugh_screen.dart';
 
 // ===============================
 // MAIN
@@ -52,7 +51,7 @@ class AnesthesiaCalculatorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Калькулятор реаниматолога',
+      title: "РљР°Р»СЊРєСѓР»СЏС‚РѕСЂ СЂРµР°РЅРёРјР°С‚РѕР»РѕРіР°",
       theme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF121212),
@@ -68,7 +67,7 @@ class AnesthesiaCalculatorApp extends StatelessWidget {
 }
 
 // ===============================
-// МОДЕЛЬ КАЛЬКУЛЯТОРА
+// РњРћР”Р•Р›Р¬ РљРђР›Р¬РљРЈР›РЇРўРћР Рђ
 // ===============================
 
 class CalculatorItem {
@@ -86,7 +85,7 @@ class CalculatorItem {
 }
 
 // ===============================
-// ГЛАВНЫЙ ЭКРАН
+// Р“Р›РђР’РќР«Р™ Р­РљР РђРќ
 // ===============================
 
 class HomePage extends StatefulWidget {
@@ -99,246 +98,205 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController searchController = TextEditingController();
 
-  String searchText = '';
+  String searchText = "";
 
   Timer? searchTimer;
 
   // ===============================
-  // ВСЕ КАЛЬКУЛЯТОРЫ
-  // ===============================
-  //
-  // ВАЖНО:
-  // Группы ниже НЕ используют индексы этого списка.
-  // Поэтому добавление нового калькулятора больше
-  // не будет ломать остальные группы.
+  // Р’РЎР• РљРђР›Р¬РљРЈР›РЇРўРћР Р«
   // ===============================
 
   final List<CalculatorItem> allCalculators = [
-    // ===============================
-    // БЫСТРЫЙ ДОСТУП
-    // ===============================
     CalculatorItem(
-      name: 'ИМТ',
-      search: 'имт bmi индекс массы тела',
+      name: "РРњРў",
+      search: "РёРјС‚ bmi РёРЅРґРµРєСЃ РјР°СЃСЃС‹ С‚РµР»Р°",
       screen: const BmiScreen(),
-      emoji: '📏',
+      emoji: "рџ“Џ",
     ),
 
     CalculatorItem(
-      name: 'Расчёт скорости инфузии',
-      search: 'инфузия скорость мл час препарат дозировка',
+      name: "Р Р°СЃС‡С‘С‚ СЃРєРѕСЂРѕСЃС‚Рё РёРЅС„СѓР·РёРё",
+      search: "РёРЅС„СѓР·РёСЏ СЃРєРѕСЂРѕСЃС‚СЊ РјР» С‡Р°СЃ РїСЂРµРїР°СЂР°С‚ РґРѕР·РёСЂРѕРІРєР°",
       screen: const InfusionCalculatorScreen(),
     ),
 
     CalculatorItem(
-      name: 'СКФ',
-      search: 'скф egfr renal креатинин почки ckd epi кокрофта голта',
+      name: "РЎРљР¤",
+      search: "СЃРєС„ egfr renal РєСЂРµР°С‚РёРЅРёРЅ РїРѕС‡РєРё ckd epi",
       screen: const RenalFunctionScreen(),
-      emoji: '💧',
+      emoji: "рџ’§",
     ),
 
     CalculatorItem(
-      name: 'Харрис-Бенедикт',
-      search: 'harris benedict питание калории',
+      name: "РҐР°СЂСЂРёСЃ-Р‘РµРЅРµРґРёРєС‚",
+      search: "harris benedict РїРёС‚Р°РЅРёРµ РєР°Р»РѕСЂРёРё",
       screen: const HarrisBenedictScreen(),
     ),
 
     CalculatorItem(
-      name: 'Паркланд',
-      search: 'паркланд parkland ожоги ожог инфузия объем жидкости',
+      name: "РџР°СЂРєР»Р°РЅРґ",
+      search: "РїР°СЂРєР»Р°РЅРґ parkland РѕР¶РѕРіРё РѕР¶РѕРі РёРЅС„СѓР·РёСЏ РѕР±СЉРµРј Р¶РёРґРєРѕСЃС‚Рё",
       screen: const ParklandScreen(),
-      emoji: '🔥',
+      emoji: "рџ”Ґ",
     ),
 
     CalculatorItem(
-      name: 'Расчёт для СМА',
-      search: 'бупивакаин спинальная анестезия сма дозировка',
+      name: "Р Р°СЃС‡С‘С‚ РґР»СЏ РЎРњРђ",
+      search: "Р±СѓРїРёРІР°РєР°РёРЅ СЃРїРёРЅР°Р»СЊРЅР°СЏ Р°РЅРµСЃС‚РµР·РёСЏ СЃРјР° РґРѕР·РёСЂРѕРІРєР°",
       screen: const SpinalBupivacaineScreen(),
     ),
 
-    // ===============================
-    // ДЫХАНИЕ
-    // ===============================
     CalculatorItem(
-      name: 'Дыхательный объём ИВЛ',
-      search: 'дыхательный объем vt tidal volume вентиляция',
+      name: "Р”С‹С…Р°С‚РµР»СЊРЅС‹Р№ РѕР±СЉС‘Рј РР’Р›",
+      search: "РґС‹С…Р°С‚РµР»СЊРЅС‹Р№ РѕР±СЉРµРј vt tidal volume РІРµРЅС‚РёР»СЏС†РёСЏ",
       screen: const TidalVolumeScreen(),
     ),
 
     CalculatorItem(
-      name: 'Респираторный индекс',
-      search: 'pf ratio respiratory index оксигенация',
+      name: "Р РµСЃРїРёСЂР°С‚РѕСЂРЅС‹Р№ РёРЅРґРµРєСЃ",
+      search: "pf ratio respiratory index РѕРєСЃРёРіРµРЅР°С†РёСЏ",
       screen: const RespiratoryIndexScreen(),
     ),
 
     CalculatorItem(
-      name: 'CPIS',
-      search: 'cpis вентиляторная пневмония',
+      name: "CPIS",
+      search: "cpis РІРµРЅС‚РёР»СЏС‚РѕСЂРЅР°СЏ РїРЅРµРІРјРѕРЅРёСЏ",
       screen: const CpisScreen(),
     ),
 
-    // ===============================
-    // НЕВРОЛОГИЯ
-    // ===============================
     CalculatorItem(
-      name: 'GCS — шкала комы Глазго',
-      search: 'gcs шкг глазго кома сознание',
+      name: "GCS вЂ” С€РєР°Р»Р° РєРѕРјС‹ Р“Р»Р°Р·РіРѕ",
+      search: "gcs С€РєРі РіР»Р°Р·РіРѕ РєРѕРјР° СЃРѕР·РЅР°РЅРёРµ",
       screen: const GcsScreen(),
     ),
 
     CalculatorItem(
-      name: 'FOUR',
-      search: 'four coma кома сознание',
+      name: "FOUR",
+      search: "four coma РєРѕРјР° СЃРѕР·РЅР°РЅРёРµ",
       screen: const FourScreen(),
     ),
 
     CalculatorItem(
-      name: 'NIHSS',
-      search: 'nihss инсульт stroke неврология',
+      name: "NIHSS",
+      search: "nihss РёРЅСЃСѓР»СЊС‚ stroke РЅРµРІСЂРѕР»РѕРіРёСЏ",
       screen: const NihssScreen(),
     ),
 
     CalculatorItem(
-      name: 'Hunt-Hess',
-      search: 'hunt hess субарахноидальное кровоизлияние',
+      name: "Hunt-Hess",
+      search: "hunt hess СЃСѓР±Р°СЂР°С…РЅРѕРёРґР°Р»СЊРЅРѕРµ РєСЂРѕРІРѕРёР·Р»РёСЏРЅРёРµ",
       screen: const HuntHessScreen(),
     ),
 
     CalculatorItem(
-      name: 'RASS',
-      search: 'rass седация возбуждение',
+      name: "RASS",
+      search: "rass СЃРµРґР°С†РёСЏ РІРѕР·Р±СѓР¶РґРµРЅРёРµ",
       screen: const RassScreen(),
     ),
 
-    // ===============================
-    // ТЯЖЕСТЬ СОСТОЯНИЯ
-    // ===============================
     CalculatorItem(
-      name: 'SOFA',
-      search: 'sofa сепсис органная недостаточность',
+      name: "SOFA",
+      search: "sofa СЃРµРїСЃРёСЃ РѕСЂРіР°РЅРЅР°СЏ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕСЃС‚СЊ",
       screen: const SofaScreen(),
     ),
 
     CalculatorItem(
-      name: 'APACHE II',
-      search: 'apache apache2 тяжесть состояния прогноз',
+      name: "APACHE II",
+      search: "apache apache2 С‚СЏР¶РµСЃС‚СЊ СЃРѕСЃС‚РѕСЏРЅРёСЏ РїСЂРѕРіРЅРѕР·",
       screen: const ApacheIIScreen(),
     ),
 
-    // ===============================
-    // КАРДИОЛОГИЯ
-    // ===============================
     CalculatorItem(
-      name: 'GRACE',
-      search: 'grace окс острый коронарный синдром',
+      name: "GRACE",
+      search: "grace РѕРєСЃ РѕСЃС‚СЂС‹Р№ РєРѕСЂРѕРЅР°СЂРЅС‹Р№ СЃРёРЅРґСЂРѕРј",
       screen: const GraceScreen(),
     ),
 
     CalculatorItem(
-      name: 'Killip',
-      search: 'killip оим сердечная недостаточность',
+      name: "Killip",
+      search: "killip РѕРёРј СЃРµСЂРґРµС‡РЅР°СЏ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕСЃС‚СЊ",
       screen: const KillipScreen(),
     ),
 
     CalculatorItem(
-      name: 'CHA₂DS₂-VASc',
-      search: 'cha2ds2vasc cha vasc фибрилляция предсердий инсульт риск',
-      screen: const Cha2ds2VascScreen(),
+      name: "CHAв‚‚DSв‚‚-VASc",
+      search: "cha2ds2vasc cha vasc С„РёР±СЂРёР»Р»СЏС†РёСЏ РїСЂРµРґСЃРµСЂРґРёР№ РёРЅСЃСѓР»СЊС‚ СЂРёСЃРє",
+      screen: Cha2ds2VascScreen(),
     ),
 
-    // ===============================
-    // ГЕПАТОЛОГИЯ
-    // ===============================
     CalculatorItem(
-      name: 'Child–Pugh (Чайлд–Пью)',
-      search:
-          'child pugh чайлд пью цирроз печени гепатология '
-          'билирубин альбумин мно асцит энцефалопатия',
-      screen: const ChildPughScreen(),
-      emoji: '🧬',
-    ),
-
-    // ===============================
-    // ТЭЛА
-    // ===============================
-    CalculatorItem(
-      name: 'PESI',
-      search: 'pesi тэла эмболия риск',
+      name: "PESI",
+      search: "pesi С‚СЌР»Р° СЌРјР±РѕР»РёСЏ СЂРёСЃРє",
       screen: const PesiScreen(),
     ),
 
     CalculatorItem(
-      name: 'Geneva',
-      search: 'geneva тэла вероятность',
+      name: "Geneva",
+      search: "geneva С‚СЌР»Р° РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ",
       screen: const GenevaScreen(),
     ),
 
     CalculatorItem(
-      name: 'Wells',
-      search: 'wells тэла вероятность риск эмболия',
+      name: "Wells",
+      search: "wells С‚СЌР»Р° РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ СЂРёСЃРє СЌРјР±РѕР»РёСЏ",
       screen: const WellsScreen(),
     ),
 
+    // ===============================
+    // PADUA
+    // ===============================
     CalculatorItem(
-      name: 'Padua',
-      search: 'padua падуа вте венозная тромбоэмболия риск',
+      name: "Padua",
+      search: "padua РїР°РґСѓР° РІС‚Рµ РІРµРЅРѕР·РЅР°СЏ С‚СЂРѕРјР±РѕСЌРјР±РѕР»РёСЏ СЂРёСЃРє",
       screen: const PaduaScreen(),
     ),
 
     // ===============================
-    // ПЕДИАТРИЯ
+    // РџР•Р”РРђРўР РР§Р•РЎРљРђРЇ РРќР¤РЈР—РРЇ
     // ===============================
     CalculatorItem(
-      name: 'Инфузия у детей',
+      name: "РРЅС„СѓР·РёСЏ Сѓ РґРµС‚РµР№",
       search:
-          'инфузия дети ребенок педиатрия жидкость '
-          'жп жво жтпп обезвоживание эксикоз регидратация',
+          "РёРЅС„СѓР·РёСЏ РґРµС‚Рё СЂРµР±РµРЅРѕРє РїРµРґРёР°С‚СЂРёСЏ Р¶РёРґРєРѕСЃС‚СЊ Р¶Рї Р¶РІРѕ Р¶С‚РїРї РѕР±РµР·РІРѕР¶РёРІР°РЅРёРµ СЌРєСЃРёРєРѕР· СЂРµРіРёРґСЂР°С‚Р°С†РёСЏ",
       screen: const PediatricInfusionScreen(),
-      emoji: '👶',
+      emoji: "рџ‘¶",
     ),
 
     // ===============================
-    // ЭЛЕКТРОЛИТЫ
+    // Р­Р›Р•РљРўР РћР›РРўРќР«Р™ Р РђРЎР§РЃРў
     // ===============================
     CalculatorItem(
-      name: 'Электролитный расчёт',
+      name: "Р­Р»РµРєС‚СЂРѕР»РёС‚РЅС‹Р№ СЂР°СЃС‡С‘С‚",
       search:
-          'электролиты натрий Na гипонатриемия '
-          'калий K гипокалиемия хлор Cl гипохлоремия '
-          'кальций Ca гипокальциемия '
-          'магний Mg магний сульфат MgSO4 '
-          'дефицит электролитов',
+          "СЌР»РµРєС‚СЂРѕР»РёС‚С‹ РЅР°С‚СЂРёР№ Na РіРёРїРѕРЅР°С‚СЂРёРµРјРёСЏ РєР°Р»РёР№ K РіРёРїРѕРєР°Р»РёРµРјРёСЏ С…Р»РѕСЂ Cl РіРёРїРѕС…Р»РѕСЂРµРјРёСЏ РєР°Р»СЊС†РёР№ Ca РіРёРїРѕРєР°Р»СЊС†РёРµРјРёСЏ РґРµС„РёС†РёС‚ СЌР»РµРєС‚СЂРѕР»РёС‚РѕРІ",
       screen: const ElectrolyteCalculatorScreen(),
-      emoji: '⚡',
+      emoji: "вљЎ",
     ),
 
     // ===============================
-    // ОЖОГИ
+    // Р­Р’РђРќРЎ
     // ===============================
     CalculatorItem(
-      name: 'Эванс — ожоговая инфузия',
-      search:
-          'эванс evans ожоги ожог инфузия '
-          'кристаллоид коллоид глюкоза burn',
+      name: "Р­РІР°РЅСЃ вЂ” РѕР¶РѕРіРѕРІР°СЏ РёРЅС„СѓР·РёСЏ",
+      search: "СЌРІР°РЅСЃ evans РѕР¶РѕРіРё РѕР¶РѕРі РёРЅС„СѓР·РёСЏ РєСЂРёСЃС‚Р°Р»Р»РѕРёРґ РєРѕР»Р»РѕРёРґ РіР»СЋРєРѕР·Р° burn",
       screen: const EvansBurnScreen(),
-      emoji: '🔥',
+      emoji: "рџ”Ґ",
     ),
   ];
 
   // ===============================
-  // РАСКРЫТЫЕ ГРУППЫ
+  // Р РђРЎРљР Р«РўР«Р• Р“Р РЈРџРџР«
   // ===============================
 
   final Map<String, bool> expandedGroups = {
-    'Дыхание и вентиляция': false,
-    'Неврология и сознание': false,
-    'Тяжесть состояния пациента': false,
-    'Кардиология': false,
-    'Гепатология': false,
-    'ТЭЛА': false,
-    'Педиатрия': false,
-    'Электролиты': false,
-    'Ожоги': false,
+    "Р”С‹С…Р°РЅРёРµ Рё РІРµРЅС‚РёР»СЏС†РёСЏ": false,
+    "РќРµРІСЂРѕР»РѕРіРёСЏ Рё СЃРѕР·РЅР°РЅРёРµ": false,
+    "РўСЏР¶РµСЃС‚СЊ СЃРѕСЃС‚РѕСЏРЅРёСЏ РїР°С†РёРµРЅС‚Р°": false,
+    "РљР°СЂРґРёРѕР»РѕРіРёСЏ": false,
+    "РўР­Р›Рђ": false,
+    "РџРµРґРёР°С‚СЂРёСЏ": false,
+    "Р­Р»РµРєС‚СЂРѕР»РёС‚С‹": false,
+    "РћР¶РѕРіРё": false,
   };
 
   @override
@@ -349,7 +307,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // ===============================
-  // ПОИСК
+  // РџРћРРЎРљ
   // ===============================
 
   bool matchesSearch(CalculatorItem item, String query) {
@@ -357,11 +315,11 @@ class _HomePageState extends State<HomePage> {
       return true;
     }
 
-    final String q = query.toLowerCase().replaceAll('ё', 'е').trim();
+    final q = query.toLowerCase().replaceAll("С‘", "Рµ").trim();
 
-    final String text = '${item.name} ${item.search}'.toLowerCase().replaceAll(
-      'ё',
-      'е',
+    final text = "${item.name} ${item.search}".toLowerCase().replaceAll(
+      "С‘",
+      "Рµ",
     );
 
     return text.contains(q);
@@ -372,29 +330,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   // ===============================
-  // БЕЗОПАСНЫЙ ПОИСК КАЛЬКУЛЯТОРА
-  // ===============================
-  //
-  // Именно это защищает группы от
-  // сдвига индексов.
-  // ===============================
-
-  CalculatorItem calculatorByName(String name) {
-    return allCalculators.firstWhere((item) => item.name == name);
-  }
-
-  // ===============================
-  // ПОИСКАННЫЕ КАЛЬКУЛЯТОРЫ
+  // РџРћРРЎРљРђРќРќР«Р• РљРђР›Р¬РљРЈР›РЇРўРћР Р«
   // ===============================
 
   List<CalculatorItem> get filtered {
-    return allCalculators
-        .where((item) => matchesSearch(item, searchText))
-        .toList();
+    return allCalculators.where((e) => matchesSearch(e, searchText)).toList();
   }
 
   // ===============================
-  // КНОПКА КАЛЬКУЛЯТОРА
+  // РљРќРћРџРљРђ РљРђР›Р¬РљРЈР›РЇРўРћР Рђ
   // ===============================
 
   Widget calculatorButton(CalculatorItem item) {
@@ -448,7 +392,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // ===============================
-  // КНОПКА СМА
+  // РљРќРћРџРљРђ РЎРњРђ
   // ===============================
 
   Widget smaButton(CalculatorItem item) {
@@ -474,7 +418,7 @@ class _HomePageState extends State<HomePage> {
                 shape: BoxShape.circle,
               ),
               child: const Center(
-                child: Text('💉', style: TextStyle(fontSize: 22)),
+                child: Text("рџ’‰", style: TextStyle(fontSize: 22)),
               ),
             ),
 
@@ -498,7 +442,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // ===============================
-  // ЗАГОЛОВОК ГРУППЫ
+  // Р“Р РЈРџРџР«
   // ===============================
 
   Widget groupHeader(String title, String emoji, Color color) {
@@ -550,10 +494,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // ===============================
-  // РАСКРЫВАЕМАЯ ГРУППА
-  // ===============================
-
   Widget expandableGroup(
     String title,
     String emoji,
@@ -563,7 +503,7 @@ class _HomePageState extends State<HomePage> {
     bool expanded = expandedGroups[title] ?? false;
 
     final List<CalculatorItem> visible = items
-        .where((item) => matchesSearch(item, searchText))
+        .where((e) => matchesSearch(e, searchText))
         .toList();
 
     if (searchText.isNotEmpty) {
@@ -583,9 +523,7 @@ class _HomePageState extends State<HomePage> {
           curve: Curves.easeInOut,
           child: expanded
               ? Column(
-                  children: visible
-                      .map((item) => calculatorButton(item))
-                      .toList(),
+                  children: visible.map((e) => calculatorButton(e)).toList(),
                 )
               : const SizedBox(),
         ),
@@ -594,105 +532,74 @@ class _HomePageState extends State<HomePage> {
   }
 
   // ===============================
-  // СПИСКИ ГРУПП
-  // ===============================
-  //
-  // НИКАКИХ allCalculators[23],
-  // allCalculators[24] и т.п.
-  //
-  // Поэтому Child-Pugh, Mg,
-  // новый калькулятор и любые
-  // будущие изменения не ломают
-  // существующие группы.
+  // РЎРџРРЎРљР Р“Р РЈРџРџ
   // ===============================
 
   Widget groupsWidget() {
     return Column(
       children: [
-        // ===============================
-        // ДЫХАНИЕ И ВЕНТИЛЯЦИЯ
-        // ===============================
-        expandableGroup('Дыхание и вентиляция', '🫁', const Color(0xFF3F6F8F), [
-          calculatorByName('Дыхательный объём ИВЛ'),
-          calculatorByName('Респираторный индекс'),
-          calculatorByName('CPIS'),
+        expandableGroup("Р”С‹С…Р°РЅРёРµ Рё РІРµРЅС‚РёР»СЏС†РёСЏ", "рџ«Ѓ", const Color(0xFF3F6F8F), [
+          allCalculators[6],
+          allCalculators[7],
+          allCalculators[8],
         ]),
 
-        // ===============================
-        // НЕВРОЛОГИЯ
-        // ===============================
         expandableGroup(
-          'Неврология и сознание',
-          '🧠',
+          "РќРµРІСЂРѕР»РѕРіРёСЏ Рё СЃРѕР·РЅР°РЅРёРµ",
+          "рџ§ ",
           const Color(0xFF7E6AA2),
           [
-            calculatorByName('GCS — шкала комы Глазго'),
-            calculatorByName('FOUR'),
-            calculatorByName('NIHSS'),
-            calculatorByName('Hunt-Hess'),
-            calculatorByName('RASS'),
+            allCalculators[9],
+            allCalculators[10],
+            allCalculators[11],
+            allCalculators[12],
+            allCalculators[13],
           ],
         ),
 
-        // ===============================
-        // ТЯЖЕСТЬ СОСТОЯНИЯ
-        // ===============================
         expandableGroup(
-          'Тяжесть состояния пациента',
-          '🏥',
+          "РўСЏР¶РµСЃС‚СЊ СЃРѕСЃС‚РѕСЏРЅРёСЏ РїР°С†РёРµРЅС‚Р°",
+          "рџЏҐ",
           const Color(0xFF81A878),
-          [calculatorByName('SOFA'), calculatorByName('APACHE II')],
+          [allCalculators[14], allCalculators[15]],
         ),
 
-        // ===============================
-        // КАРДИОЛОГИЯ
-        // ===============================
-        expandableGroup('Кардиология', '❤️', const Color(0xFFB0B7B8), [
-          calculatorByName('GRACE'),
-          calculatorByName('Killip'),
-          calculatorByName('CHA₂DS₂-VASc'),
+        expandableGroup("РљР°СЂРґРёРѕР»РѕРіРёСЏ", "вќ¤пёЏ", const Color(0xFFB0B7B8), [
+          allCalculators[16],
+          allCalculators[17],
+          allCalculators[18],
         ]),
 
         // ===============================
-        // ГЕПАТОЛОГИЯ
+        // РўР­Р›Рђ
         // ===============================
-        expandableGroup(
-          'Гепатология',
-          '🔬',
-          const Color.fromARGB(255, 168, 87, 54),
-          [calculatorByName('Child–Pugh (Чайлд–Пью)')],
-        ),
-
-        // ===============================
-        // ТЭЛА
-        // ===============================
-        expandableGroup('ТЭЛА', '🫁', const Color.fromARGB(255, 145, 91, 182), [
-          calculatorByName('PESI'),
-          calculatorByName('Geneva'),
-          calculatorByName('Wells'),
-          calculatorByName('Padua'),
+        expandableGroup("РўР­Р›Рђ", "рџ«Ѓ", const Color.fromARGB(255, 145, 91, 182), [
+          allCalculators[19],
+          allCalculators[20],
+          allCalculators[21],
+          allCalculators[22],
         ]),
 
         // ===============================
-        // ПЕДИАТРИЯ
+        // РџР•Р”РРђРўР РРЇ
         // ===============================
-        expandableGroup('Педиатрия', '👶', const Color(0xFF4F8A70), [
-          calculatorByName('Инфузия у детей'),
+        expandableGroup("РџРµРґРёР°С‚СЂРёСЏ", "рџ‘¶", const Color(0xFF4F8A70), [
+          allCalculators[23],
         ]),
 
         // ===============================
-        // ЭЛЕКТРОЛИТЫ
+        // Р­Р›Р•РљРўР РћР›РРўР«
         // ===============================
-        expandableGroup('Электролиты', '⚡', const Color(0xFFB08A45), [
-          calculatorByName('Электролитный расчёт'),
+        expandableGroup("Р­Р»РµРєС‚СЂРѕР»РёС‚С‹", "вљЎ", const Color(0xFFB08A45), [
+          allCalculators[24],
         ]),
 
         // ===============================
-        // ОЖОГИ
+        // РћР–РћР“Р
         // ===============================
-        expandableGroup('Ожоги', '🔥', const Color(0xFF9A6139), [
-          calculatorByName('Паркланд'),
-          calculatorByName('Эванс — ожоговая инфузия'),
+        expandableGroup("РћР¶РѕРіРё", "рџ”Ґ", const Color(0xFF9A6139), [
+          allCalculators[4],
+          allCalculators[25],
         ]),
       ],
     );
@@ -709,9 +616,9 @@ class _HomePageState extends State<HomePage> {
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('🩺 ', style: TextStyle(fontSize: 20)),
+            Text("рџ©є ", style: TextStyle(fontSize: 20)),
             Text(
-              'Калькулятор\nреаниматолога',
+              "РљР°Р»СЊРєСѓР»СЏС‚РѕСЂ\nСЂРµР°РЅРёРјР°С‚РѕР»РѕРіР°",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
@@ -723,26 +630,19 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
         child: Column(
           children: [
-            // ===============================
-            // ПОИСК
-            // ===============================
             TextField(
               controller: searchController,
               onChanged: (value) {
                 searchTimer?.cancel();
 
                 searchTimer = Timer(const Duration(milliseconds: 250), () {
-                  if (!mounted) {
-                    return;
-                  }
-
                   setState(() {
                     searchText = value;
                   });
                 });
               },
               decoration: InputDecoration(
-                hintText: 'Поиск калькулятора...',
+                hintText: "РџРѕРёСЃРє РєР°Р»СЊРєСѓР»СЏС‚РѕСЂР°...",
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
                 fillColor: const Color(0xFF1E1E1E),
@@ -754,36 +654,23 @@ class _HomePageState extends State<HomePage> {
 
             const SizedBox(height: 20),
 
-            // ===============================
-            // БЫСТРЫЙ ДОСТУП
-            // ===============================
             if (searchText.isEmpty) ...[
-              calculatorButton(calculatorByName('ИМТ')),
-
-              calculatorButton(calculatorByName('Расчёт скорости инфузии')),
-
-              calculatorButton(calculatorByName('СКФ')),
-
-              calculatorButton(calculatorByName('Харрис-Бенедикт')),
-
-              smaButton(calculatorByName('Расчёт для СМА')),
+              calculatorButton(allCalculators[0]),
+              calculatorButton(allCalculators[1]),
+              calculatorButton(allCalculators[2]),
+              calculatorButton(allCalculators[3]),
+              smaButton(allCalculators[5]),
             ],
 
-            // ===============================
-            // ПОИСК
-            // ===============================
             if (searchText.isNotEmpty)
-              ...filtered.map((item) => calculatorButton(item)),
+              ...filtered.map((e) => calculatorButton(e)),
 
-            // ===============================
-            // ГРУППЫ
-            // ===============================
             if (searchText.isEmpty) groupsWidget(),
 
             const SizedBox(height: 30),
 
             // ===============================
-            // ПОДПИСЬ АВТОРА
+            // РџРћР”РџРРЎР¬ РђР’РўРћР Рђ
             // ===============================
             Align(
               alignment: Alignment.centerRight,
@@ -805,22 +692,20 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        'Автор: Рожко А.Ю.',
+                        "РђРІС‚РѕСЂ: Р РѕР¶РєРѕ Рђ.Р®.",
                         style: TextStyle(fontSize: 11, color: Colors.white70),
                       ),
-
                       Text(
-                        'Калькулятор реаниматолога v2.0',
+                        "РљР°Р»СЊРєСѓР»СЏС‚РѕСЂ СЂРµР°РЅРёРјР°С‚РѕР»РѕРіР° v2.0",
                         style: TextStyle(
                           fontSize: 11,
                           color: Color(0xFF95C7F3),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
                       Text(
-                        '• Пр. созд. 25.07.2026\n'
-                        '• Обновлено 12.09.2026',
+                        "вЂў РџСЂ. СЃРѕР·Рґ. 25.07.2026\n"
+                        "вЂў РћР±РЅРѕРІР»РµРЅРѕ 12.09.2026",
                         textAlign: TextAlign.right,
                         style: TextStyle(fontSize: 10, color: Colors.grey),
                       ),
@@ -837,3 +722,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

@@ -820,7 +820,7 @@ class _HomePageState extends State<HomePage> {
 
                       Text(
                         '• Пр. созд. 25.07.2026\n'
-                        '• Обновлено 12.09.2026',
+                        '• Обновлено 23.09.2026',
                         textAlign: TextAlign.right,
                         style: TextStyle(fontSize: 10, color: Colors.grey),
                       ),

@@ -32,6 +32,7 @@ import 'killip_screen.dart';
 import 'cpis_screen.dart';
 import 'cha2ds2vasc_screen.dart';
 import 'child_pugh_screen.dart';
+import 'nutritional_support_screen.dart';
 
 // ===============================
 // MAIN
@@ -144,16 +145,30 @@ class _HomePageState extends State<HomePage> {
     ),
 
     CalculatorItem(
+      name: 'Расчёт для СМА',
+      search: 'бупивакаин спинальная анестезия сма дозировка',
+      screen: const SpinalBupivacaineScreen(),
+    ),
+
+    CalculatorItem(
       name: 'Паркланд',
       search: 'паркланд parkland ожоги ожог инфузия объем жидкости',
       screen: const ParklandScreen(),
       emoji: '🔥',
     ),
 
+    // ===============================
+    // НУТРИТИВНАЯ ПОДДЕРЖКА
+    // ===============================
     CalculatorItem(
-      name: 'Расчёт для СМА',
-      search: 'бупивакаин спинальная анестезия сма дозировка',
-      screen: const SpinalBupivacaineScreen(),
+      name: 'Нутритивная поддержка',
+      search:
+          'нутритивная поддержка питание энтеральное парентеральное '
+          'калории ккал белок аминокислоты глюкоза липиды '
+          'энергетические субстраты пептамен peptamen '
+          'интралипид intralipid альбумин вамин аминостерил гепавил',
+      screen: const NutritionalSupportScreen(),
+      emoji: '🥗',
     ),
 
     // ===============================
@@ -339,6 +354,7 @@ class _HomePageState extends State<HomePage> {
     'Педиатрия': false,
     'Электролиты': false,
     'Ожоги': false,
+    'Питание и нутритивная поддержка': false,
   };
 
   @override
@@ -694,6 +710,16 @@ class _HomePageState extends State<HomePage> {
           calculatorByName('Паркланд'),
           calculatorByName('Эванс — ожоговая инфузия'),
         ]),
+
+        // ===============================
+        // ПИТАНИЕ И НУТРИТИВНАЯ ПОДДЕРЖКА
+        // ===============================
+        expandableGroup(
+          'Питание и нутритивная поддержка',
+          '🥗',
+          const Color(0xFF4F8A70),
+          [calculatorByName('Нутритивная поддержка')],
+        ),
       ],
     );
   }
@@ -820,7 +846,7 @@ class _HomePageState extends State<HomePage> {
 
                       Text(
                         '• Пр. созд. 25.07.2026\n'
-                        '• Обновлено 23.09.2026',
+                        '• Обновлено 25.09.2026',
                         textAlign: TextAlign.right,
                         style: TextStyle(fontSize: 10, color: Colors.grey),
                       ),
